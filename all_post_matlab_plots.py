@@ -22,17 +22,24 @@ import colorsys
 from scipy.io import savemat
 import pandas as pd
 from coordinate_comparer_test import *
+import glob
+
 colors = ['b', 'g', 'r', 'c', 'm', 'y', 'k']
 
+#these should be updated for your velocity field
 u = scipy.io.loadmat('u_data.mat')['u']
 v= scipy.io.loadmat('v_data.mat')['v']
 w = scipy.io.loadmat('w_data.mat')['w']
+
 grid_size = len(u)
 ranglen = 2
 sample_fraction = 1
-numstruc=22
-inL=12
-invol=64
+
+file_pattern = f"PCA_results_slice_{slice}_contour_*.mat"
+file_list = glob.glob(file_pattern)
+numstruc = len(file_list)  # This is the number of structures
+inL=12 #integral length scale
+#invol=64
 numstructs=numstruc
 numintlen=inL
 
@@ -189,7 +196,7 @@ for i, feature in enumerate([f for f in features if f not in separate_features])
     axs1[i].set_xlabel('Structure Index', fontsize=label_font_size)
     axs1[i].tick_params(axis='both', labelsize=tick_font_size)
 plt.tight_layout()
-print(sum(feature_data['V'])*(inL**3)/(invol**3))
+#print(sum(feature_data['V'])*(inL**3)/(invol**3))
 plt.savefig(f"05slice_{slice+1}_main_minkowski_results_distribution.png")
 #plt.close(fig1)
 plt.show()
